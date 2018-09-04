@@ -13,7 +13,7 @@ export default function Nav(){
                 <Route exact path='/' component={Login}/>
                 <Route path='/dashboard' component={Dashboard}/>
                 <Route path='/search' component={Search}/>
-                <Route path='/search' component={Profile}/>
+                <Route path='/profile' component={Profile}/>
             </Switch>
         </div>
     )

@@ -38,8 +38,7 @@ app.get('/auth/callback', async (req, res) => {
         grant_type: 'authorization_code',
         redirect_uri: `http://${req.headers.host}/auth/callback`
     }
-    console.log(payload)
-    // console.log('env', process.env)
+    // console.log(payload)
     let resWithToken = await axios.post(`https://${REACT_APP_DOMAIN}/oauth/token`, payload)
     // console.log('token', resWithToken)
     let resWithUserData = await axios.get(`https://${REACT_APP_DOMAIN}/userinfo/?access_token=${resWithToken.data.access_token}`)
@@ -60,17 +59,49 @@ app.get('/auth/callback', async (req, res) => {
 })
 
 app.get('/api/userData', async (req, res) => {
+    const db = req.app.get('db')
+
     if(DEV_KEY === 'true'){
-        let user = await req.app.get('db').find_user([AUTH_ID])
+        let user = await db.find_user(AUTH_ID)
         req.session.userid = user[0].userid
-        res.status(200).send(req.session.userid)
+        let {userid} = req.session
+        res.status(200).send({userid})
     }else{
-        if(req.session.userid){
-            res.status(200).send(req.session.userid)
+        if(userid){
+            res.status(200).send({userid})
         }else{
             res.status(401).send('Please Login')
         }
     }
+})
+
+app.get('/api/getName', async (req, res) => {
+    const db = req.app.get('db')
+    let {userid} = req.session
+
+    let name = await db.get_name(userid)
+    
+    res.status(200).send(name)
+})
+
+app.get('/api/updateUser', async (req, res) => {
+    const db = req.app.get('db')
+    let {userid} = req.session
+    let {
+        first_name,
+        last_name,
+        gender,
+        hair_color,
+        eye_color,
+        hobby,
+        birth_day,
+        birth_month,
+        birth_year
+    } = req.body
+
+    let updatedUser = await db.update_user(userid, first_name, last_name, gender, hair_color, eye_color, hobby, birth_day, birth_month, birth_year)
+
+    res.status(200)
 })
 
 app.get('/api/logout', (req, res) => {
