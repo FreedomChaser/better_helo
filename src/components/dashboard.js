@@ -99,15 +99,15 @@ class Dashboard extends Component{
                             <div>
                                 <select>
                                     {/* 9 options */}
-                                    <option value='0'>First Name</option>
-                                    <option value='1'>Last Name</option>
-                                    <option value='2'>Gender</option>
-                                    <option value='3'>Hair Color</option>
-                                    <option value='4'>Eye Color</option>
-                                    <option value='5'>Hobby</option>
-                                    <option value='6'>Birthday Day</option>
-                                    <option value='7'>Birthday Month</option>
-                                    <option value='8'>Birthday Year</option>
+                                    <option value='first_name'>First Name</option>
+                                    <option value='last_name'>Last Name</option>
+                                    <option value='gender'>Gender</option>
+                                    <option value='hair_color'>Hair Color</option>
+                                    <option value='eye_color'>Eye Color</option>
+                                    <option value='hobby'>Hobby</option>
+                                    <option value='birth_day'>Birthday Day</option>
+                                    <option value='birth_month'>Birthday Month</option>
+                                    <option value='birth_year'>Birthday Year</option>
                                 </select>
                             </div>
                         </div>

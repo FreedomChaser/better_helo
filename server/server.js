@@ -127,6 +127,9 @@ app.get('/api/getUser', async (req, res) => {
     res.status(200).send(user)
 })
 
+// finish building out endpoint
+app.get('/api/getAllUsers')
+
 app.get('/api/logout', (req, res) => {
     req.session.destroy()
 })
