@@ -9,7 +9,7 @@ class Search extends Component{
             axios.get('/api/userData')
             .then(res => {
                 console.log(res)
-                this.props.updateUserid(res)
+                this.props.updateUserid(res.data.userid)
             }).catch(err => {
                 this.props.history.push('/')
             })

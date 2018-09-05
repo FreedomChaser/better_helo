@@ -9,3 +9,4 @@ birthday = $8,
 birth_month = $9,
 birth_year = $10
 where userid = $1
+returning first_name, last_name;

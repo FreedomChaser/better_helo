@@ -10,24 +10,28 @@ class Profile extends Component{
         this.state = {
             first_name: '',
             last_name: '',
-            gender: '',
-            hair_color: '',
-            eye_color: '',
-            hobby: '',
+            gender: 'Other',
+            hair_color: 'Brown',
+            eye_color: 'Brown',
+            hobby: 'Video Games',
             birth_day: 0,
-            birth_month: '',
-            birth_year: 0,
+            birth_month: 'January',
+            birth_year: 2018,
+            firstInput: '',
+            lastInput: ''
         }
         this.createYear = this.createYear.bind(this)
         this.clearState = this.clearState.bind(this)
         this.createDay = this.createDay.bind(this)
+        this.updateUser = this.updateUser.bind(this)
     }
+    //do an axios call to get user info set state based on info, when a change happens that state gets updates, but the rest remains what it was
     componentDidMount(){
         if(!this.props.userid){
             axios.get('/api/userData')
             .then(res => {
                 console.log(res)
-                this.props.updateUserid(res)
+                this.props.updateUserid(res.data.userid)
             }).catch(err => {
                 this.props.history.push('/')
             })
@@ -45,32 +49,36 @@ class Profile extends Component{
             hobby: 'Video Games',
             birth_day: 1,
             birth_month: 'January',
-            birth_year: 1980,
-        })   
+            birth_year: 2018,
+        })
+        alert('update cancelled')
+        this.state.first_name='',
+        this.state.last_name=''  
     }
     updateUser(){
         if(!this.state.birth_day && !this.state.birth_month && !this.state.birth_year){
             alert('must fill out complete birthday to update profile')
         }else{
-            axios.post('/api/updateUser', {
+            // console.log('firing')
+            axios.put('/api/updateUser', {
                 first_name: this.state.first_name,
                 last_name: this.state.last_name,
                 gender: this.state.gender,
                 hair_color: this.state.hair_color,
                 eye_color: this.state.eye_color,
                 hobby: this.state.hobby,
-                birth_day: this.state.birth_day,
+                birth_day: Number(this.state.birth_day),
                 birth_month: this.state.birth_month,
-                birth_year: this.state.birth_year
-       }).then(alert('user updated'))
+                birth_year: Number(this.state.birth_year)
+       }).then((res) => console.log(res))
         } 
     }
 
     createYear(){
         let yearArr = []
-        let year = 1980
-        for(let i=1950; i < 2018; i++){
-            year++
+        let year = 2019
+        for(let i=2019; i > 1930; i--){
+            year--
             yearArr.push(<option value={`${year}`}> {year} </option>)
             
         }
@@ -81,10 +89,11 @@ class Profile extends Component{
         let dayArr = []
         let day = 0
 
-        for(let i=0; i < 32; i++){
+        for(let i=0; i < 31; i++){
             day++
             dayArr.push(<option value={`${day}`}> {day} </option>)
         }
+        return dayArr
     }
 
     render(){
@@ -97,22 +106,24 @@ class Profile extends Component{
                         <h1>{this.props.last_name}</h1>
                     </div>
                 {/* creat axios and/or reducer reqs for this */}
-                    <button>Update</button>
+                    <button onClick={this.updateUser}>Update</button>
                     <button onClick={this.clearState}>Cancel</button>
                 </div>
                 <div>
                     <div>
                         <p>First Name</p>
-                        <input onChange={(e) => this.setState({first_name: e.target.value})}/>
+                        <input onChange={(e) => this.setState({first_name: e.target.value})} value={this.state.first_name}/>
+                        {/* value={this.state.firstInput} */}
                     </div>
                     <div>
                         <p>Last Name</p>
-                        <input onChange={(e) => this.setState({last_name: e.target.value})}/>
+                        <input onChange={(e) => this.setState({last_name: e.target.value})} value={this.state.last_name}/>
+                        {/* value={this.state.lastInput} */}
                     </div>
                     <div>
                         <p>Gender</p>
                         <div>
-                            <select onClick={(value) => this.setState({gender: value})}>
+                            <select onChange={(e) => this.setState({gender: e.target.value})}>
                                 <option value='other'>Other</option>
                                 <option value='male'>Male</option>
                                 <option value='female'>Female</option>
@@ -122,7 +133,7 @@ class Profile extends Component{
                     <div>
                         <p>Hair Color</p>
                         <div>
-                            <select onClick={(value) => this.setState({hair_color: value})}>
+                            <select onChange={(e) => this.setState({hair_color: e.target.value})}>
                                 <option value='brown'>Brown</option>
                                 <option value='black'>Black</option>
                                 <option value='red'>Red</option>
@@ -133,7 +144,7 @@ class Profile extends Component{
                     <div>
                         <p>Eye Color</p>
                         <div>
-                            <select onClick={(value) => this.setState({eye_color: value})}>
+                            <select onChange={(e) => this.setState({eye_color: e.target.value})}>
                                 <option value='brown'>Brown</option>
                                 <option value='blue'>Blue</option>
                                 <option value='hazel'>Hazel</option>
@@ -145,7 +156,7 @@ class Profile extends Component{
                     <div>
                         <p>Hobby</p>
                         <div>
-                            <select onClick={(value) => this.setState({hobby: value})}>
+                            <select onChange={(e) => this.setState({hobby: e.target.value})}>
                                 <option value='video games'>Video Games</option>
                                 <option value='sports'>Sports</option>
                                 <option value='hiking'>Hiking</option>
@@ -157,46 +168,15 @@ class Profile extends Component{
                     <div>
                         <p>Birthday Day</p>
                         <div>
-                            <select onClick={(value) => this.setState({birth_day:value})}>
-                                {this.createDay()}
-                                {/* <option value='1'>1</option>
-                                <option value='2'>2</option>
-                                <option value='3'>3</option>
-                                <option value='4'>4</option>
-                                <option value='5'>5</option>
-                                <option value='6'>6</option>
-                                <option value='7'>7</option>
-                                <option value='8'>8</option>
-                                <option value='9'>9</option>
-                                <option value='10'>10</option>
-                                <option value='11'>11</option>
-                                <option value='12'>12</option>
-                                <option value='13'>13</option>
-                                <option value='14'>14</option>
-                                <option value='15'>15</option>
-                                <option value='16'>16</option>
-                                <option value='17'>17</option>
-                                <option value='18'>18</option>
-                                <option value='19'>19</option>
-                                <option value='20'>20</option>
-                                <option value='21'>21</option>
-                                <option value='22'>22</option>
-                                <option value='23'>23</option>
-                                <option value='24'>24</option>
-                                <option value='25'>25</option>
-                                <option value='26'>26</option>
-                                <option value='27'>27</option>
-                                <option value='28'>28</option>
-                                <option value='29'>29</option>
-                                <option value='30'>30</option>
-                                <option value='31'>31</option> */}
+                            <select onChange={(e) => this.setState({birth_day: e.target.value})}>
+                                {this.createDay()}                               
                             </select>
                         </div>
                     </div>
                     <div>
                         <p>Birthday Month</p>
                         <div>
-                            <select>
+                            <select onChange={(e) => this.setState({birth_month: e.target.value})}>
                                 <option value='january'>January</option>
                                 <option value='february'>February</option>
                                 <option value='march'>March</option>
@@ -215,7 +195,7 @@ class Profile extends Component{
                     <div>
                         <p>Birthday Year</p>
                         <div>
-                            <select>
+                            <select onChange={(e) => this.setState({birth_year: e.target.value})}>
                                 {this.createYear()}
                             </select>
                         </div>
@@ -240,4 +220,4 @@ function mapStateToProps(reduxState){
 }
 
 
-export default connect(null, {updateUserid, updateFirstName, updateLastName, updateGender, updateHairColor, updateEyeColor, updateHobby, updateBirthDay, updateBirthMonth, updateBirthYear})(Profile)
+export default connect(mapStateToProps, {updateUserid, updateFirstName, updateLastName, updateGender, updateHairColor, updateEyeColor, updateHobby, updateBirthDay, updateBirthMonth, updateBirthYear})(Profile)

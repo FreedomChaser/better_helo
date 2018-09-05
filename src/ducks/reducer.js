@@ -2,7 +2,7 @@
 // updateHobby, updateBirthDay, updateBirthMonth, updateBirthYear
 
 const initialState = {
-    userid: '',
+    userid: 0,
     first_name: '',
     last_name: '',
     gender: '',
