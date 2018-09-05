@@ -34,7 +34,7 @@ class Dashboard extends Component{
     }
     render(){
         // console.log('props', this.props)
-        let name = this.state.first_name && this.state.last_name ? (
+        let name = this.state.first_name || this.state.last_name ? (
             <div>
                 <img className='profilePic' src={`https://robohash.org/${this.props.userid}.png?set=set4`} alt='randomly generated kitten acting as a profile picture'/>
                 <div>

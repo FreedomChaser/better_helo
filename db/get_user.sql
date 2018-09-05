@@ -1,2 +1,2 @@
 select * from heloUsers
-where authID = $1
+where userid = $1

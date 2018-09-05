@@ -85,7 +85,7 @@ app.get('/api/getName', async (req, res) => {
 })
 
 app.put('/api/updateUser', async (req, res) => {
-    console.log('firing')
+    // console.log('firing')
     const db = req.app.get('db')
     let {userid} = req.session
     var {
@@ -102,15 +102,29 @@ app.put('/api/updateUser', async (req, res) => {
     
     // console.log(first_name.length, last_name.length, gender.length, hair_color.length, eye_color.length, hobby.length, birth_day.length, birth_month.length, birth_year.length)
 
-    console.log(req.body, req.session)
+    // console.log(req.body, req.session)
     let updatedUser = await db.update_user(userid, first_name, last_name, gender, hair_color, eye_color, hobby, birth_day, birth_month, birth_year)
 
-
-    console.log(updatedUser)
+    // console.log(updatedUser)
     var {first_name, last_name} = updatedUser[0]
     let sentUser = {first_name, last_name}
 
     res.status(200).send(sentUser)
+})
+
+app.get('/api/getUser', async (req, res) => {
+    const db = req.app.get('db')
+    let {userid} = req.session
+
+    // console.log(userid)
+    let gottenUser = await db.get_user(userid)
+
+    // console.log('user', gottenUser[0])
+
+    let {first_name, last_name, gender, hair_color, eye_color, hobby, birthday, birth_month, birth_year} = gottenUser[0]
+    let user = {first_name, last_name, gender, hair_color, eye_color, hobby, birthday, birth_month, birth_year}
+
+    res.status(200).send(user)
 })
 
 app.get('/api/logout', (req, res) => {
