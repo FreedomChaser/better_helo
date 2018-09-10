@@ -1,0 +1,12 @@
+--nested query
+--select all rows were userid != {userid}
+    --do 2 queries? one where all thats selected is where userid = friend id 
+    --and one where all thats selected is where userid != friendid
+--limit 12(worry about pagination after basic logic is worked out)
+--return all needed feilds but no more?
+
+--on front end
+    --take two queries put in separate arrays
+    --add isfrend to friends array
+    --combine arrays
+    --map through and display which button based on whether it has the is friend or not

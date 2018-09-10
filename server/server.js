@@ -75,14 +75,14 @@ app.get('/api/userData', async (req, res) => {
     }
 })
 
-app.get('/api/getName', async (req, res) => {
-    const db = req.app.get('db')
-    let {userid} = req.session
+// app.get('/api/getName', async (req, res) => {
+//     const db = req.app.get('db')
+//     let {userid} = req.session
 
-    let name = await db.get_name(userid)
+//     let name = await db.get_name(userid)
     
-    res.status(200).send(name)
-})
+//     res.status(200).send(name)
+// })
 
 app.put('/api/updateUser', async (req, res) => {
     // console.log('firing')
@@ -129,6 +129,39 @@ app.get('/api/getUser', async (req, res) => {
 
 // finish building out endpoint
 app.get('/api/getAllUsers')
+
+app.get('/api/reqFriends/:key/:value', async (req, res) => {
+    //a db request that gets users who don't match the nested friend ids or the userid
+    console.log('firing')
+    const db = req.app.get('db')
+    let {userid} = req.session
+    //needs further destructuring: column name and value
+    let {key, value} = req.params
+    
+    let reqFriends = await db.query(
+        `select * from helousers where ${key} = $1 and userid <> $2 and helousers.userid not in (select friendid from helofriends)`, [value, userid]
+    )
+    // let reqFriends = await db.get_req_friends([userid, key, value])
+
+    res.send(reqFriends)
+})
+
+app.post('/api/addFriend/:id', async (req, res) => {
+    const db = req.app.get('db')
+    let {userid} = req.session
+    let {id} = req.params
+    
+    //this adds to heloFriends table
+    let addedFriend = await db.add_friend(userid, id)
+
+    res.sendStatus(200)
+})
+
+//bracket notation
+//query 1-get all the friend idnums in array
+//query 2- get matching data for column and value
+//send both to the front as arrays
+//on the front end filter through where column id does not equal idnums
 
 app.get('/api/logout', (req, res) => {
     req.session.destroy()
