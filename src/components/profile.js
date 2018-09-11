@@ -94,7 +94,7 @@ class Profile extends Component{
             birth_month: this.props.birth_month,
             birth_year: this.props.birth_year,
         })
-        alert('update cancelled')
+        // alert('update cancelled')
         this.state.first_name=this.props.first_name,
         this.state.last_name=this.props.last_name  
     }
@@ -164,42 +164,47 @@ class Profile extends Component{
 
     render(){
         return(
-            <div>
-                <div>
-                    <img className='profilePic' src={`https://robohash.org/${this.props.userid}.png?set=set4`} alt='randomly generated kitten acting as a profile picture'/>
-                    <div>
-                        <h1>{this.props.first_name}</h1>
-                        <h1>{this.props.last_name}</h1>
+            <div className='proAll'>
+                <div className='proHead'>
+
+                    <div className='proUser'>
+                        <img className='profilePic' src={`https://robohash.org/${this.props.userid}.png?set=set4`} alt='randomly generated kitten acting as a profile picture'/>
+                        <div className='proNameDiv'>
+                        <h1 className='profileName'>{this.props.first_name}</h1>
+                        <h1 className='profileName'>{this.props.last_name}</h1>
+                        </div>
                     </div>
                 {/* creat axios and/or reducer reqs for this */}
-                    <button onClick={this.updateUser}>Update</button>
-                    <button onClick={this.clearState}>Cancel</button>
-                </div>
                 <div>
-                    <div>
-                        <p>First Name</p>
-                        <input onChange={(e) => this.setState({first_name: e.target.value})} value={this.state.first_name}/>
+                    <button className='btnUpdate' onClick={this.updateUser}>Update</button>
+                    <button className='btnCancel' onClick={this.clearState}>Cancel</button>
+                </div>
+                </div>
+                <div className='proBody'>
+                    <div className='proPair'>
+                        <p className='profileTitle'>First Name</p>
+                        <input className='proInput' onChange={(e) => this.setState({first_name: e.target.value})} value={this.state.first_name}/>
                         {/* value={this.state.firstInput} */}
                     </div>
-                    <div>
-                        <p>Last Name</p>
-                        <input onChange={(e) => this.setState({last_name: e.target.value})} value={this.state.last_name}/>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Last Name</p>
+                        <input className='proInput' onChange={(e) => this.setState({last_name: e.target.value})} value={this.state.last_name}/>
                         {/* value={this.state.lastInput} */}
                     </div>
-                    <div>
-                        <p>Gender</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Gender</p>
                         <div>
-                            <select value={this.state.gender} onChange={(e) => this.setState({gender: e.target.value})}>
+                            <select className='proSelect' value={this.state.gender} onChange={(e) => this.setState({gender: e.target.value})}>
                                 <option value='other'>Other</option>
                                 <option value='male'>Male</option>
                                 <option value='female'>Female</option>
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Hair Color</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Hair Color</p>
                         <div>
-                            <select vlaue={this.state.hair_color} onChange={(e) => this.setState({hair_color: e.target.value})}>
+                            <select className='proSelect' value={this.state.hair_color} onChange={(e) => this.setState({hair_color: e.target.value})}>
                                 <option value='brown'>Brown</option>
                                 <option value='black'>Black</option>
                                 <option value='red'>Red</option>
@@ -207,10 +212,10 @@ class Profile extends Component{
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Eye Color</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Eye Color</p>
                         <div>
-                            <select value={this.state.eye_color} onChange={(e) => this.setState({eye_color: e.target.value})}>
+                            <select className='proSelect' value={this.state.eye_color} onChange={(e) => this.setState({eye_color: e.target.value})}>
                                 <option value='brown'>Brown</option>
                                 <option value='blue'>Blue</option>
                                 <option value='hazel'>Hazel</option>
@@ -219,10 +224,10 @@ class Profile extends Component{
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Hobby</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Hobby</p>
                         <div>
-                            <select value={this.state.hobby} onChange={(e) => this.setState({hobby: e.target.value})}>
+                            <select className='proSelect' value={this.state.hobby} onChange={(e) => this.setState({hobby: e.target.value})}>
                                 <option value='video games'>Video Games</option>
                                 <option value='sports'>Sports</option>
                                 <option value='hiking'>Hiking</option>
@@ -231,18 +236,18 @@ class Profile extends Component{
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Birthday Day</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Birthday Day</p>
                         <div>
-                            <select value={this.state.birth_day} onChange={(e) => this.setState({birth_day: e.target.value})}>
+                            <select className='proSelect' value={this.state.birth_day} onChange={(e) => this.setState({birth_day: e.target.value})}>
                                 {this.createDay()}                               
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Birthday Month</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Birthday Month</p>
                         <div>
-                            <select value={this.state.birth_month} onChange={(e) => this.setState({birth_month: e.target.value})}>
+                            <select className='proSelect' value={this.state.birth_month} onChange={(e) => this.setState({birth_month: e.target.value})}>
                                 <option value='january'>January</option>
                                 <option value='february'>February</option>
                                 <option value='march'>March</option>
@@ -258,10 +263,10 @@ class Profile extends Component{
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <p>Birthday Year</p>
+                    <div className='proPair'>
+                        <p className='profileTitle'>Birthday Year</p>
                         <div>
-                            <select value={this.state.birth_year} onChange={(e) => this.setState({birth_year: e.target.value})}>
+                            <select className='proSelect' value={this.state.birth_year} onChange={(e) => this.setState({birth_year: e.target.value})}>
                                 {this.createYear()}
                             </select>
                         </div>

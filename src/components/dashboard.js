@@ -1,5 +1,5 @@
-//build out redux for user validation
-//add comp did mount to each pg
+//fix authid leak for here and search
+//fix birth_day to birthday (probably in db so vice versa)
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
@@ -21,7 +21,7 @@ class Dashboard extends Component{
             birth_month: '',
             birth_year: 2018,
             rec_friends: [],
-            sortVal: ''
+            sortVal: 'first_name'
         }
         this.getFriends = this.getFriends.bind(this)
         this.addFriend = this.addFriend.bind(this)
@@ -32,7 +32,7 @@ class Dashboard extends Component{
         if(!this.props.userid){
             axios.get('/api/userData')
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.props.updateUserid(res.data.userid)
                 axios.get('/api/getUser')
                 .then((res) => {this.setState({
@@ -45,8 +45,8 @@ class Dashboard extends Component{
                     birth_day: res.data.birthday,
                     birth_month: res.data.birth_month,
                     birth_year: res.data.birth_year
-            })
-            this.axGet()
+            }, this.axGet)
+            
         })
                 // axios.get(`/api/reqFriends/${this.state.sortVal}`)
                 // .then((res) => this.setState({rec_friends: res.data}))
@@ -66,7 +66,7 @@ class Dashboard extends Component{
                     birth_month: res.data.birth_month,
                     birth_year: res.data.birth_year
             }, 
-            this.axGet()
+            this.axGet
         )
             this.props.updateFirstName(res.data.first_name)
             this.props.updateLastName(res.data.last_name)
@@ -78,16 +78,18 @@ class Dashboard extends Component{
     }
     //step 1  of selector box process
     getFriends(val){
+        console.log('friends', val)
         //val needs to be equal to the matching key value pair from state
-        this.setState({sortVal: val}, this.axGet())
+        this.setState({sortVal: val}, this.axGet)
         //somehow make it so this fires after state's been updated            
     }
     axGet(){
         //sort val = the key and then I need the actual value
-        axios.get(`/api/reqFriends/${this.state.sortVal}/${this.state['sortVal']}`)
+        // console.log('sortVal', this.state.sortVal, this.state[this.state.sortVal])
+        axios.get(`/api/reqFriends/${this.state.sortVal}/${this.state[this.state.sortVal]}`)
         //take db add it to rec_friends 
         //then (build out secondary function and invoke to) map out req friends
-        .then(res => this.setState({rec_friends: res.data}, this.mapRecs()))
+        .then(res => this.setState({rec_friends: res.data}, this.mapRecs))
     }
     addFriend(i, id){
         axios.post(`/api/addFriend/${id}`)
@@ -100,23 +102,23 @@ class Dashboard extends Component{
 
     mapRecs(){
         // let displayRecs = []
-        if(this.rec_friends){
+        if(this.state.rec_friends[0]){
             // build out feture to map through array
-          let displayRecs = this.rec_friends.map((ele, i) => {
+         return this.state.rec_friends.map((ele, i) => {
              return(
              <div key={i}>
-                <img className='userPic' src={`https://robohash.org/${ele.friendid}.png?set=set4`} alt='randomly generated kitten acting as another users profile picture'/>
+                <img className='userPic' src={`https://robohash.org/${ele.userid}.png?set=set4`} alt='randomly generated kitten acting as another users profile picture'/>
                 <div>
                     <p>{ele.first_name}</p>
                     <p>{ele.last_name}</p>
                 </div>
                 {/* build out put req for button */}
-                <button onChange={this.addFriend(i, ele.userid)}>Add Friend</button>
+                <button onClick={() => this.addFriend(i, ele.userid)}>Add Friend</button>
              </div>
              )
          })
         }else{
-            <p>No recommendations</p>
+            return(<p>No recommendations</p>)
         }
     }
 
