@@ -1,5 +1,5 @@
 //fix authid leak for here and search
-//fix birth_day to birthday (probably in db so vice versa)
+//1 page
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'

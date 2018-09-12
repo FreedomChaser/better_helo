@@ -128,20 +128,24 @@ app.get('/api/getUser', async (req, res) => {
 })
 
 // finish building out endpoint
-app.get('/api/getAllNotFriends', async (req, res) => {
-    console.log('firing')
+app.get('/api/getAllNotFriends/:off', async (req, res) => {
     const db = req.app.get('db')
     var {userid} = req.session
+    let {off} = req.params
+
+    let count = await db.query(
+        `select count(*) from helousers where userid <> $1 and helousers.userid not in (select friendid from helofriends where userid = ${userid})`, [userid]
+    )
     
     let allNots = await db.query(
-        `select * from helousers where userid <> $1 and helousers.userid not in (select friendid from helofriends where userid = ${userid})`, [userid]
+        `select * from helousers where userid <> $1 and helousers.userid not in (select friendid from helofriends where userid = ${userid}) order by userid offset $2 limit 12`, [userid, off]
     )
     // console.log(allNots)
     
     // var {userid, first_name, last_name} = allNots
     // let notFriend = {userid, first_name, last_name}
     // console.log(notFriend)
-    res.send(allNots)
+    res.send({count, allNots})
 })
 
 app.get('/api/reqFriends/:key/:value', async (req, res) => {
@@ -167,10 +171,12 @@ app.post('/api/addFriend/:id', async (req, res) => {
     const db = req.app.get('db')
     let {userid} = req.session
     let {id} = req.params
-    
+    console.log(userid, id)
     //this adds to heloFriends table
     let addedFriend = await db.add_friend(userid, id)
-
+    let notSet = await db.set_not_friends(userid)
+    let reSet = await db.set_friends(userid)
+    
     res.sendStatus(200)
 })
 
@@ -180,38 +186,60 @@ app.delete('/api/removeFriend/:id', async (req, res) => {
     let {id} = req.params
 
     let removedFriend = await db.remove_friend(userid, id)
+    let notSet = await db.set_not_friends(userid)
+    let reSet = await db.set_friends(userid)
+
+    res.sendStatus(200)
 })
 
-app.get('/api/searchVal/:val', async (req, res) => {
+app.get('/api/searchVal/:val/:off', async (req, res) => {
     // console.log('val firing')
     const db = req.app.get('db')
     let {userid} = req.session
-    let {val} = req.params
+    let {val, off} = req.params
 
     let notSet = await db.set_not_friends(userid)
-    let allValMatches = await db.get_by_val(userid, val)
+    let reSet = await db.set_friends(userid)
+    let count = await db.get_count_by_val(userid, val)
+    let allValMatches = await db.get_by_val(userid, val, off)
 
-    res.send(allValMatches)
+    res.send({count, allValMatches})
 })
 
-app.get('/api/searchBoth/:val/:name', async (req, res) => {
+app.get('/api/searchBoth/:val/:name/:off', async (req, res) => {
     const db = req.app.get('db')
     let {userid} = req.session
-    let {val, name} = req.params
+    let {val, name, off} = req.params
 
     let notSet = await db.set_not_friends(userid)
+    let reSet = await db.set_friends(userid)
+    let count = await db.query(
+        `select * from helousers where ${val} = $3 and userid <> $1`, [userid, val,name])  
     let bothMatches = await db.query(
-        `select * from helousers where ${val} = $3 and userid <> $1`, [userid, val,name]) 
+        `select * from helousers where ${val} = $3 and userid <> $1 order by userid offset $4 limit 12`, [userid, val, name, off]) 
     // let bothMatches = await db.get_by_both(userid, val, name)
 
-    res.send(bothMatches)
+    res.send({count, bothMatches})
 })
 
-//let db req for total num of users
-    //on front end render btns based on total divided by 25
-    //buttons hit same end point
-    //let db req for first 25
+    //let db req for total num of users
+    //on front end render btns based on total divided by 24
+    //gives number use number to create an array of buttons
+    //onclick pass button index number multiplied by 24 back to controller make call with that num as offset
+    //buttons function hit same end point
+    //let db req for first 24
 
+//references getAllNotFriends
+// app.get('/api/resetUsers', async (req,res) =>{
+//     const db = req.app.get('db')
+//     let {userid} = req.session
+
+//     let resetCount = await db.query(
+//         `select count(*) from helousers where userid <> $1 and helousers.userid not in (select friendid from helofriends where userid = ${userid})`, [userid]
+//     )
+//     // console.log(resetCount)
+//     res.send({resetCount})
+// })
 
 //bracket notation
 //query 1-get all the friend idnums in array

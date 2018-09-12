@@ -125,7 +125,10 @@ body{
   border-style: none;
   width: 90px;
   height: 30px;
-  margin-right: 10px
+  margin-right: 10px;
+  /* border-radius: 5px; */
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3; 
 }
 .proBody{
   height: 60vh;
@@ -153,9 +156,123 @@ body{
   width: 180px;
   margin: 5px;
   font-size: 1vw;
-  border-radius: 3px
+  border-radius: 3px;
+  /* border-radius: 5px; */
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3; 
 }
 .profileTitle{
   font-size: 2vh;
   margin: 3px
 }
+.fullSearch{
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  width: 60vw;
+  margin: 5vh 0 10vh 0
+  /* justify-content: center */
+}
+.userPic{
+  height: 100px;
+  width: 100px
+}
+.btnActive{
+  background-color: #403d39
+}
+.btnInert{
+  background-color: #737373
+}
+.searchBod{
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: center
+}
+.searchHead{
+  display: flex;
+  padding: 10px
+}
+.searchSelect{
+  height: 30px;
+  width: 100px;
+  margin-right: 10px;
+  font-size: 1.25vw;
+  border-radius: 5px;
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3; 
+  padding-left: 3px  
+}
+.searchInput{
+  border-radius: 3px;
+  border: solid 1px #ccc3c3;
+  margin-right: 10px
+}
+.resetBtn{
+  height: 30px;
+  width: 100px;
+  font-size: 1.25vw;
+  border-radius: 3px;
+  background-image: radial-gradient(circle at 50% 0, #ffffff, #f1eceb);
+  border: solid 1px #ccc3c3;
+}
+.searchBtn{
+  height: 30px;
+  width: 100px;
+  font-size: 1.25vw;
+  border-radius: 3px;
+  background-image: radial-gradient(circle at 50%-46%, #737373, #403d39);
+  border-style: none;
+  margin-right: 10px;
+  color: white
+}
+.searchMain{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px 30px 20px 30px;
+}
+.userDiv{
+  width: 45%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 18px 20px 18px;
+  border-radius: 3px;
+  background-color: #f2f2f2;
+  box-shadow: 0 13px 15px 0 rgba(0,0,0,0.1), 0 13px 14px 0 (0,0,0,0.2); 
+  padding: 10px
+}
+.searchUser{
+  display: flex;
+  flex-direction: row;
+  align-items: center
+}
+.userName{
+  margin: 0px 0 5px 10px;
+  font-weight: bolder;
+  font-size: 1.25vw
+}
+.addBtn{
+  border-radius: 3px;
+  background-image: radial-gradient(circle at 50%-46%, #ff9770, #ff7a6e);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  color: white;
+  border-style: none;
+  height: 35px;
+  width: 100px
+}
+.removeBtn{
+  border-radius: 3px;
+  background-image: radial-gradient(circle at 50%-46%, #737373, #403d39);
+  border-style: none;
+  color: white;
+  border-style: none;
+  height: 35px;
+  width: 100px
+}
+/* .searchNames{
+  display: flex;
+  flex-direction: column
+} */
